@@ -1,0 +1,16 @@
+.git
+.venv
+venv
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.ruff_cache
+lakehouse/bronze/*
+lakehouse/silver/*
+lakehouse/gold/*
+lakehouse/quarantine/*
+logs/*.log
+reports/*.json
+notebooks/.ipynb_checkpoints
+.DS_Store

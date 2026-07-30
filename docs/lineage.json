@@ -1,0 +1,562 @@
+{
+  "nodes": [
+    {
+      "id": "src:employees",
+      "layer": "source",
+      "label": "employee_directory/employees.csv"
+    },
+    {
+      "id": "bronze:employees",
+      "layer": "bronze",
+      "label": "employees"
+    },
+    {
+      "id": "silver:employees",
+      "layer": "silver",
+      "label": "employees"
+    },
+    {
+      "id": "src:contractor_roster",
+      "layer": "source",
+      "label": "vendor_management/contractor_roster.csv"
+    },
+    {
+      "id": "bronze:contractor_roster",
+      "layer": "bronze",
+      "label": "contractor_roster"
+    },
+    {
+      "id": "silver:contractor_roster",
+      "layer": "silver",
+      "label": "contractor_roster"
+    },
+    {
+      "id": "src:team_membership",
+      "layer": "source",
+      "label": "project_tracking/team_membership.csv"
+    },
+    {
+      "id": "bronze:team_membership",
+      "layer": "bronze",
+      "label": "team_membership"
+    },
+    {
+      "id": "silver:team_membership",
+      "layer": "silver",
+      "label": "team_membership"
+    },
+    {
+      "id": "src:teams",
+      "layer": "source",
+      "label": "project_tracking/teams.json"
+    },
+    {
+      "id": "bronze:teams",
+      "layer": "bronze",
+      "label": "teams"
+    },
+    {
+      "id": "silver:teams",
+      "layer": "silver",
+      "label": "teams"
+    },
+    {
+      "id": "src:monthly_achievements",
+      "layer": "source",
+      "label": "performance_management/monthly_achievements.json"
+    },
+    {
+      "id": "bronze:monthly_achievements",
+      "layer": "bronze",
+      "label": "monthly_achievements"
+    },
+    {
+      "id": "silver:monthly_achievements",
+      "layer": "silver",
+      "label": "monthly_achievements"
+    },
+    {
+      "id": "src:locations",
+      "layer": "source",
+      "label": "facilities/locations.csv"
+    },
+    {
+      "id": "bronze:locations",
+      "layer": "bronze",
+      "label": "locations"
+    },
+    {
+      "id": "silver:locations",
+      "layer": "silver",
+      "label": "locations"
+    },
+    {
+      "id": "src:organizations",
+      "layer": "source",
+      "label": "org_structure/organizations.json"
+    },
+    {
+      "id": "bronze:organizations",
+      "layer": "bronze",
+      "label": "organizations"
+    },
+    {
+      "id": "silver:organizations",
+      "layer": "silver",
+      "label": "organizations"
+    },
+    {
+      "id": "gold:team_members",
+      "layer": "gold",
+      "label": "team_members"
+    },
+    {
+      "id": "gold:team_locations",
+      "layer": "gold",
+      "label": "team_locations"
+    },
+    {
+      "id": "gold:monthly_achievements",
+      "layer": "gold",
+      "label": "monthly_achievements"
+    },
+    {
+      "id": "gold:leader_colocation",
+      "layer": "gold",
+      "label": "leader_colocation"
+    },
+    {
+      "id": "gold:non_direct_leaders",
+      "layer": "gold",
+      "label": "non_direct_leaders"
+    },
+    {
+      "id": "gold:non_direct_staff_ratio",
+      "layer": "gold",
+      "label": "non_direct_staff_ratio"
+    },
+    {
+      "id": "gold:organization_reporting",
+      "layer": "gold",
+      "label": "organization_reporting"
+    },
+    {
+      "id": "analytics:dashboard",
+      "layer": "analytics",
+      "label": "Streamlit Dashboard"
+    },
+    {
+      "id": "analytics:notebook",
+      "layer": "analytics",
+      "label": "Jupyter Notebook"
+    }
+  ],
+  "edges": [
+    {
+      "from": "src:employees",
+      "to": "bronze:employees",
+      "transform": "raw ingest (immutable)"
+    },
+    {
+      "from": "bronze:employees",
+      "to": "silver:employees",
+      "transform": "text cleaning; email canonicalization; department standardization; employment_type standardization; hire_date → ISO; dedupe emp_id; manager FK validation"
+    },
+    {
+      "from": "src:contractor_roster",
+      "to": "bronze:contractor_roster",
+      "transform": "raw ingest (immutable)"
+    },
+    {
+      "from": "bronze:contractor_roster",
+      "to": "silver:contractor_roster",
+      "transform": "text cleaning; email canonicalization; dates → ISO"
+    },
+    {
+      "from": "src:team_membership",
+      "to": "bronze:team_membership",
+      "transform": "raw ingest (immutable)"
+    },
+    {
+      "from": "bronze:team_membership",
+      "to": "silver:team_membership",
+      "transform": "text cleaning; team_code → TM-###; email canonicalization; allocation bounds [0,100]; dates → ISO; orphan-member quarantine; staff_type tagging"
+    },
+    {
+      "from": "src:teams",
+      "to": "bronze:teams",
+      "transform": "raw ingest (immutable)"
+    },
+    {
+      "from": "bronze:teams",
+      "to": "silver:teams",
+      "transform": "flatten organization.*; text cleaning; leader/manager email canonicalization; formed_date → ISO; leader staff-type resolution"
+    },
+    {
+      "from": "src:monthly_achievements",
+      "to": "bronze:monthly_achievements",
+      "transform": "raw ingest (immutable)"
+    },
+    {
+      "from": "bronze:monthly_achievements",
+      "to": "silver:monthly_achievements",
+      "transform": "text cleaning; month → YYYY-MM; impact_score numeric coercion; orphan-achievement quarantine; team_id attributability"
+    },
+    {
+      "from": "src:locations",
+      "to": "bronze:locations",
+      "transform": "raw ingest (immutable)"
+    },
+    {
+      "from": "bronze:locations",
+      "to": "silver:locations",
+      "transform": "text cleaning; dedupe location_code (LOC-01 conflict)"
+    },
+    {
+      "from": "src:organizations",
+      "to": "bronze:organizations",
+      "transform": "raw ingest (immutable)"
+    },
+    {
+      "from": "bronze:organizations",
+      "to": "silver:organizations",
+      "transform": "text cleaning; org_leader_email canonicalization"
+    },
+    {
+      "from": "silver:team_membership",
+      "to": "gold:team_members",
+      "transform": "membership ⋈ person-master ⋈ teams ⋈ locations"
+    },
+    {
+      "from": "silver:employees",
+      "to": "gold:team_members",
+      "transform": "membership ⋈ person-master ⋈ teams ⋈ locations"
+    },
+    {
+      "from": "silver:contractor_roster",
+      "to": "gold:team_members",
+      "transform": "membership ⋈ person-master ⋈ teams ⋈ locations"
+    },
+    {
+      "from": "silver:teams",
+      "to": "gold:team_members",
+      "transform": "membership ⋈ person-master ⋈ teams ⋈ locations"
+    },
+    {
+      "from": "silver:locations",
+      "to": "gold:team_members",
+      "transform": "membership ⋈ person-master ⋈ teams ⋈ locations"
+    },
+    {
+      "from": "gold:team_members",
+      "to": "analytics:dashboard",
+      "transform": "consume"
+    },
+    {
+      "from": "gold:team_members",
+      "to": "analytics:notebook",
+      "transform": "consume"
+    },
+    {
+      "from": "silver:teams",
+      "to": "gold:team_locations",
+      "transform": "teams ⋈ locations(primary_office); employee_count from membership"
+    },
+    {
+      "from": "silver:locations",
+      "to": "gold:team_locations",
+      "transform": "teams ⋈ locations(primary_office); employee_count from membership"
+    },
+    {
+      "from": "silver:team_membership",
+      "to": "gold:team_locations",
+      "transform": "teams ⋈ locations(primary_office); employee_count from membership"
+    },
+    {
+      "from": "gold:team_locations",
+      "to": "analytics:dashboard",
+      "transform": "consume"
+    },
+    {
+      "from": "gold:team_locations",
+      "to": "analytics:notebook",
+      "transform": "consume"
+    },
+    {
+      "from": "silver:monthly_achievements",
+      "to": "gold:monthly_achievements",
+      "transform": "filter attributable (team_id) → group by team_id, year, month"
+    },
+    {
+      "from": "silver:teams",
+      "to": "gold:monthly_achievements",
+      "transform": "filter attributable (team_id) → group by team_id, year, month"
+    },
+    {
+      "from": "gold:monthly_achievements",
+      "to": "analytics:dashboard",
+      "transform": "consume"
+    },
+    {
+      "from": "gold:monthly_achievements",
+      "to": "analytics:notebook",
+      "transform": "consume"
+    },
+    {
+      "from": "silver:teams",
+      "to": "gold:leader_colocation",
+      "transform": "compare leader location vs modal member location per team"
+    },
+    {
+      "from": "silver:team_membership",
+      "to": "gold:leader_colocation",
+      "transform": "compare leader location vs modal member location per team"
+    },
+    {
+      "from": "silver:employees",
+      "to": "gold:leader_colocation",
+      "transform": "compare leader location vs modal member location per team"
+    },
+    {
+      "from": "silver:contractor_roster",
+      "to": "gold:leader_colocation",
+      "transform": "compare leader location vs modal member location per team"
+    },
+    {
+      "from": "silver:locations",
+      "to": "gold:leader_colocation",
+      "transform": "compare leader location vs modal member location per team"
+    },
+    {
+      "from": "gold:leader_colocation",
+      "to": "analytics:dashboard",
+      "transform": "consume"
+    },
+    {
+      "from": "gold:leader_colocation",
+      "to": "analytics:notebook",
+      "transform": "consume"
+    },
+    {
+      "from": "silver:teams",
+      "to": "gold:non_direct_leaders",
+      "transform": "leader email resolved to employee (direct) or contractor (non-direct)"
+    },
+    {
+      "from": "silver:employees",
+      "to": "gold:non_direct_leaders",
+      "transform": "leader email resolved to employee (direct) or contractor (non-direct)"
+    },
+    {
+      "from": "silver:contractor_roster",
+      "to": "gold:non_direct_leaders",
+      "transform": "leader email resolved to employee (direct) or contractor (non-direct)"
+    },
+    {
+      "from": "gold:non_direct_leaders",
+      "to": "analytics:dashboard",
+      "transform": "consume"
+    },
+    {
+      "from": "gold:non_direct_leaders",
+      "to": "analytics:notebook",
+      "transform": "consume"
+    },
+    {
+      "from": "silver:team_membership",
+      "to": "gold:non_direct_staff_ratio",
+      "transform": "per team: non_direct_members / total_members"
+    },
+    {
+      "from": "silver:employees",
+      "to": "gold:non_direct_staff_ratio",
+      "transform": "per team: non_direct_members / total_members"
+    },
+    {
+      "from": "silver:contractor_roster",
+      "to": "gold:non_direct_staff_ratio",
+      "transform": "per team: non_direct_members / total_members"
+    },
+    {
+      "from": "gold:non_direct_staff_ratio",
+      "to": "analytics:dashboard",
+      "transform": "consume"
+    },
+    {
+      "from": "gold:non_direct_staff_ratio",
+      "to": "analytics:notebook",
+      "transform": "consume"
+    },
+    {
+      "from": "silver:teams",
+      "to": "gold:organization_reporting",
+      "transform": "classify reports_to_type; build reporting chain"
+    },
+    {
+      "from": "silver:organizations",
+      "to": "gold:organization_reporting",
+      "transform": "classify reports_to_type; build reporting chain"
+    },
+    {
+      "from": "gold:organization_reporting",
+      "to": "analytics:dashboard",
+      "transform": "consume"
+    },
+    {
+      "from": "gold:organization_reporting",
+      "to": "analytics:notebook",
+      "transform": "consume"
+    }
+  ],
+  "gold_detail": {
+    "team_members": {
+      "question": "Q1 — Who are the members of each team?",
+      "inputs": [
+        "team_membership",
+        "employees",
+        "contractor_roster",
+        "teams",
+        "locations"
+      ],
+      "transformation": "membership ⋈ person-master ⋈ teams ⋈ locations",
+      "business_rule": "member identity resolved by canonical email; direct-wins tie-break"
+    },
+    "team_locations": {
+      "question": "Q2 — Where are the teams located?",
+      "inputs": [
+        "teams",
+        "locations",
+        "team_membership"
+      ],
+      "transformation": "teams ⋈ locations(primary_office); employee_count from membership",
+      "business_rule": "one row per team_id; state absent in source (region provided)"
+    },
+    "monthly_achievements": {
+      "question": "Q3 — Monthly achievements per team",
+      "inputs": [
+        "monthly_achievements",
+        "teams"
+      ],
+      "transformation": "filter attributable (team_id) → group by team_id, year, month",
+      "business_rule": "name-only achievements excluded (team_name non-unique)"
+    },
+    "leader_colocation": {
+      "question": "Q4 — Leader not co-located with majority",
+      "inputs": [
+        "teams",
+        "team_membership",
+        "employees",
+        "contractor_roster",
+        "locations"
+      ],
+      "transformation": "compare leader location vs modal member location per team",
+      "business_rule": "co-located = leader city == majority member city"
+    },
+    "non_direct_leaders": {
+      "question": "Q5 — Teams with non-direct leaders",
+      "inputs": [
+        "teams",
+        "employees",
+        "contractor_roster"
+      ],
+      "transformation": "leader email resolved to employee (direct) or contractor (non-direct)",
+      "business_rule": "non-direct leader = leader email ∈ contractor roster (not an employee)"
+    },
+    "non_direct_staff_ratio": {
+      "question": "Q6 — Non-direct staff ratio > threshold",
+      "inputs": [
+        "team_membership",
+        "employees",
+        "contractor_roster"
+      ],
+      "transformation": "per team: non_direct_members / total_members",
+      "business_rule": "flag ratio > NON_DIRECT_RATIO_THRESHOLD (0.20, configurable)"
+    },
+    "organization_reporting": {
+      "question": "Q7 — Teams reporting to org leaders",
+      "inputs": [
+        "teams",
+        "organizations"
+      ],
+      "transformation": "classify reports_to_type; build reporting chain",
+      "business_rule": "direct = reports_to_type == 'Org Leader' (== reporting_manager ∈ org leaders)"
+    }
+  },
+  "silver_transforms": {
+    "employees": [
+      "text cleaning",
+      "email canonicalization",
+      "department standardization",
+      "employment_type standardization",
+      "hire_date → ISO",
+      "dedupe emp_id",
+      "manager FK validation"
+    ],
+    "contractor_roster": [
+      "text cleaning",
+      "email canonicalization",
+      "dates → ISO"
+    ],
+    "team_membership": [
+      "text cleaning",
+      "team_code → TM-###",
+      "email canonicalization",
+      "allocation bounds [0,100]",
+      "dates → ISO",
+      "orphan-member quarantine",
+      "staff_type tagging"
+    ],
+    "teams": [
+      "flatten organization.*",
+      "text cleaning",
+      "leader/manager email canonicalization",
+      "formed_date → ISO",
+      "leader staff-type resolution"
+    ],
+    "monthly_achievements": [
+      "text cleaning",
+      "month → YYYY-MM",
+      "impact_score numeric coercion",
+      "orphan-achievement quarantine",
+      "team_id attributability"
+    ],
+    "locations": [
+      "text cleaning",
+      "dedupe location_code (LOC-01 conflict)"
+    ],
+    "organizations": [
+      "text cleaning",
+      "org_leader_email canonicalization"
+    ]
+  },
+  "source_to_bronze": {
+    "employees": [
+      "employee_directory",
+      "employees.csv"
+    ],
+    "contractor_roster": [
+      "vendor_management",
+      "contractor_roster.csv"
+    ],
+    "team_membership": [
+      "project_tracking",
+      "team_membership.csv"
+    ],
+    "teams": [
+      "project_tracking",
+      "teams.json"
+    ],
+    "monthly_achievements": [
+      "performance_management",
+      "monthly_achievements.json"
+    ],
+    "locations": [
+      "facilities",
+      "locations.csv"
+    ],
+    "organizations": [
+      "org_structure",
+      "organizations.json"
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  ACME Analytics Platform — local orchestration
+#
+#    docker compose up --build
+#
+#  Services:
+#    postgres   — serving / metadata database
+#    etl        — one-shot: runs the full Bronze→Silver→Gold pipeline, then exits
+#    dashboard  — Streamlit analytics UI (Gold-only) on http://localhost:8501
+#
+#  The lakehouse, reports and logs are shared via named volumes so the dashboard
+#  sees whatever the etl service produced.
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-acme_analytics}
+      POSTGRES_USER: ${POSTGRES_USER:-acme}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-acme} -d ${POSTGRES_DB:-acme_analytics}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  etl:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+    env_file:
+      - .env
+    volumes:
+      - ./datasets:/app/datasets:ro
+      - lakehouse:/app/lakehouse
+      - reports:/app/reports
+      - logs:/app/logs
+    command: ["python", "run_pipeline.py", "all"]
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    depends_on:
+      etl:
+        condition: service_completed_successfully
+    environment:
+      POSTGRES_HOST: postgres
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./datasets:/app/datasets:ro
+      - lakehouse:/app/lakehouse
+      - reports:/app/reports
+      - logs:/app/logs
+    command: ["streamlit", "run", "dashboard/app.py",
+              "--server.port=8501", "--server.address=0.0.0.0", "--server.headless=true"]
+
+volumes:
+  pgdata:
+  lakehouse:
+  reports:
+  logs:

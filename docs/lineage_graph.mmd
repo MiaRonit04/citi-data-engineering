@@ -1,0 +1,92 @@
+flowchart LR
+  subgraph source["Source Systems"]
+    src_employees["employee_directory/employees.csv"]
+    src_contractor_roster["vendor_management/contractor_roster.csv"]
+    src_team_membership["project_tracking/team_membership.csv"]
+    src_teams["project_tracking/teams.json"]
+    src_monthly_achievements["performance_management/monthly_achievements.json"]
+    src_locations["facilities/locations.csv"]
+    src_organizations["org_structure/organizations.json"]
+  end
+  subgraph bronze["Bronze"]
+    bronze_employees["employees"]
+    bronze_contractor_roster["contractor_roster"]
+    bronze_team_membership["team_membership"]
+    bronze_teams["teams"]
+    bronze_monthly_achievements["monthly_achievements"]
+    bronze_locations["locations"]
+    bronze_organizations["organizations"]
+  end
+  subgraph silver["Silver"]
+    silver_employees["employees"]
+    silver_contractor_roster["contractor_roster"]
+    silver_team_membership["team_membership"]
+    silver_teams["teams"]
+    silver_monthly_achievements["monthly_achievements"]
+    silver_locations["locations"]
+    silver_organizations["organizations"]
+  end
+  subgraph gold["Gold"]
+    gold_team_members["team_members"]
+    gold_team_locations["team_locations"]
+    gold_monthly_achievements["monthly_achievements"]
+    gold_leader_colocation["leader_colocation"]
+    gold_non_direct_leaders["non_direct_leaders"]
+    gold_non_direct_staff_ratio["non_direct_staff_ratio"]
+    gold_organization_reporting["organization_reporting"]
+  end
+  subgraph analytics["Analytics"]
+    analytics_dashboard["Streamlit Dashboard"]
+    analytics_notebook["Jupyter Notebook"]
+  end
+  src_employees --> bronze_employees
+  bronze_employees --> silver_employees
+  src_contractor_roster --> bronze_contractor_roster
+  bronze_contractor_roster --> silver_contractor_roster
+  src_team_membership --> bronze_team_membership
+  bronze_team_membership --> silver_team_membership
+  src_teams --> bronze_teams
+  bronze_teams --> silver_teams
+  src_monthly_achievements --> bronze_monthly_achievements
+  bronze_monthly_achievements --> silver_monthly_achievements
+  src_locations --> bronze_locations
+  bronze_locations --> silver_locations
+  src_organizations --> bronze_organizations
+  bronze_organizations --> silver_organizations
+  silver_team_membership --> gold_team_members
+  silver_employees --> gold_team_members
+  silver_contractor_roster --> gold_team_members
+  silver_teams --> gold_team_members
+  silver_locations --> gold_team_members
+  gold_team_members --> analytics_dashboard
+  gold_team_members --> analytics_notebook
+  silver_teams --> gold_team_locations
+  silver_locations --> gold_team_locations
+  silver_team_membership --> gold_team_locations
+  gold_team_locations --> analytics_dashboard
+  gold_team_locations --> analytics_notebook
+  silver_monthly_achievements --> gold_monthly_achievements
+  silver_teams --> gold_monthly_achievements
+  gold_monthly_achievements --> analytics_dashboard
+  gold_monthly_achievements --> analytics_notebook
+  silver_teams --> gold_leader_colocation
+  silver_team_membership --> gold_leader_colocation
+  silver_employees --> gold_leader_colocation
+  silver_contractor_roster --> gold_leader_colocation
+  silver_locations --> gold_leader_colocation
+  gold_leader_colocation --> analytics_dashboard
+  gold_leader_colocation --> analytics_notebook
+  silver_teams --> gold_non_direct_leaders
+  silver_employees --> gold_non_direct_leaders
+  silver_contractor_roster --> gold_non_direct_leaders
+  gold_non_direct_leaders --> analytics_dashboard
+  gold_non_direct_leaders --> analytics_notebook
+  silver_team_membership --> gold_non_direct_staff_ratio
+  silver_employees --> gold_non_direct_staff_ratio
+  silver_contractor_roster --> gold_non_direct_staff_ratio
+  gold_non_direct_staff_ratio --> analytics_dashboard
+  gold_non_direct_staff_ratio --> analytics_notebook
+  silver_teams --> gold_organization_reporting
+  silver_organizations --> gold_organization_reporting
+  gold_organization_reporting --> analytics_dashboard
+  gold_organization_reporting --> analytics_notebook

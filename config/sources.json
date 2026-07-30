@@ -1,0 +1,68 @@
+{
+  "_comment": "Source-system registry. The Bronze layer is fully driven by this file — no dataset name, path or format is hardcoded in Python. Add a new source by adding an entry here.",
+  "sources": [
+    {
+      "dataset": "employees",
+      "source_system": "employee_directory",
+      "relative_path": "employee_directory/employees.csv",
+      "format": "csv",
+      "description": "Direct staff master (full-time employees).",
+      "natural_key": ["emp_id"],
+      "required_columns": ["emp_id", "email", "department", "location_code", "employment_type", "status"]
+    },
+    {
+      "dataset": "contractor_roster",
+      "source_system": "vendor_management",
+      "relative_path": "vendor_management/contractor_roster.csv",
+      "format": "csv",
+      "description": "Non-direct staff master (contractors / vendors).",
+      "natural_key": ["contractor_id"],
+      "required_columns": ["contractor_id", "email", "agency", "engagement_type", "status"]
+    },
+    {
+      "dataset": "team_membership",
+      "source_system": "project_tracking",
+      "relative_path": "project_tracking/team_membership.csv",
+      "format": "csv",
+      "description": "Team-to-person membership bridge.",
+      "natural_key": ["team_code", "employee_email"],
+      "required_columns": ["team_code", "employee_email", "role"]
+    },
+    {
+      "dataset": "teams",
+      "source_system": "project_tracking",
+      "relative_path": "project_tracking/teams.json",
+      "format": "json",
+      "description": "Team master with organisation, office, leader and reporting metadata.",
+      "natural_key": ["team_id"],
+      "required_columns": ["team_id", "team_name", "team_leader_email", "primary_office"]
+    },
+    {
+      "dataset": "monthly_achievements",
+      "source_system": "performance_management",
+      "relative_path": "performance_management/monthly_achievements.json",
+      "format": "json",
+      "description": "Monthly team achievement events.",
+      "natural_key": [],
+      "required_columns": ["month", "title", "category"]
+    },
+    {
+      "dataset": "locations",
+      "source_system": "facilities",
+      "relative_path": "facilities/locations.csv",
+      "format": "csv",
+      "description": "Office location dimension.",
+      "natural_key": ["location_code"],
+      "required_columns": ["location_code", "city", "country", "region"]
+    },
+    {
+      "dataset": "organizations",
+      "source_system": "org_structure",
+      "relative_path": "org_structure/organizations.json",
+      "format": "json",
+      "description": "Organisation dimension with organisation-leader email.",
+      "natural_key": ["org_id"],
+      "required_columns": ["org_id", "org_name", "org_leader_email"]
+    }
+  ]
+}

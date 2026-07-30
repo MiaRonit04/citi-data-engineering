@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+!.env.example
+
+# Data lake artifacts (generated, reproducible) — keep structure, ignore data
+lakehouse/bronze/*
+lakehouse/silver/*
+lakehouse/gold/*
+lakehouse/quarantine/*
+!lakehouse/**/.gitkeep
+
+# Generated reports & logs (reproducible)
+logs/*.log
+reports/*.json
+!reports/.gitkeep
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Raw source datasets are large — do not commit by default.
+# Comment the next line if the grader needs the data committed.
+datasets/data-engineering-sample-teams-scenario/

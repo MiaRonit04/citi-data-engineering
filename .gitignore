@@ -32,6 +32,6 @@ reports/*.json
 .idea/
 .vscode/
 
-# Raw source datasets are large — do not commit by default.
-# Comment the next line if the grader needs the data committed.
-datasets/data-engineering-sample-teams-scenario/
+# Raw source datasets are committed so the pipeline runs immediately after clone.
+# (Largest file ~40 MB; total ~95 MB. Re-add the exclusion below to keep them out.)
+# datasets/data-engineering-sample-teams-scenario/

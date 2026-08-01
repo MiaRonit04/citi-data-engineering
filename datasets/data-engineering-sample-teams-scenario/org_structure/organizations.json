@@ -1,0 +1,32 @@
+[
+  {
+    "org_id": "ORG-01",
+    "org_name": "Product Organization",
+    "org_leader_email": "caitlin.howard@acme-inc.com"
+  },
+  {
+    "org_id": "ORG-02",
+    "org_name": "Engineering Organization",
+    "org_leader_email": "robert.griffin@acme-inc.com"
+  },
+  {
+    "org_id": "ORG-03",
+    "org_name": "Sales Organization",
+    "org_leader_email": "jasonfoster@acme-inc.com"
+  },
+  {
+    "org_id": "ORG-04",
+    "org_name": "Customer Success Organization",
+    "org_leader_email": "carllee@acme-inc.com"
+  },
+  {
+    "org_id": "ORG-05",
+    "org_name": "Data & Analytics Organization",
+    "org_leader_email": "samuel.brown@acme-inc.com"
+  },
+  {
+    "org_id": "ORG-06",
+    "org_name": "IT Operations Organization",
+    "org_leader_email": "krystalholder@acme-inc.com"
+  }
+]

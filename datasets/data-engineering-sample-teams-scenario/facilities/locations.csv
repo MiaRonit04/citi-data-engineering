@@ -1,0 +1,11 @@
+location_code,city,country,region,timezone
+LOC-01,Austin,USA,AMER,America/Chicago
+LOC-02,New York,USA,AMER,America/New_York
+LOC-03,San Francisco,USA,AMER,America/Los_Angeles
+LOC-04,Toronto,Canada,AMER,America/Toronto
+LOC-05,London,UK,EMEA,Europe/London
+LOC-06,Berlin,Germany,EMEA,Europe/Berlin
+LOC-07,Warsaw,Poland,EMEA,Europe/Warsaw
+LOC-08,Bangalore,India,APAC,Asia/Kolkata
+LOC-09,Singapore,Singapore,APAC,Asia/Singapore
+LOC-01,Dallas,USA,AMER,America/Chicago

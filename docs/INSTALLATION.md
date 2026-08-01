@@ -15,9 +15,11 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-## Provide the dataset
+## Dataset
 
-Place the scenario folder under `datasets/` so that this path exists:
+The sample scenario is **bundled in the repo** under `datasets/`, so the
+pipeline runs immediately after clone. To use your own data instead, point
+`DATASETS_DIR` in `.env` at a folder with this layout:
 
 ```
 datasets/data-engineering-sample-teams-scenario/

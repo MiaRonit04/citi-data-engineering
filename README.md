@@ -74,7 +74,7 @@ docs/          full documentation set                   run_pipeline.py  orchest
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env                      # adjust if needed
-# place the scenario under datasets/ (see .env DATASETS_DIR)
+# the sample scenario is bundled under datasets/ — nothing else to provide
 python run_pipeline.py all                # Bronze → Silver → Gold → lineage
 streamlit run dashboard/app.py            # open http://localhost:8501
 ```
@@ -126,6 +126,8 @@ a completion checklist all live in [`docs/`](docs/) (index in
 
 ## 12. Known limitations
 
+- The bundled scenario data lives in `datasets/` (~91 MB) so the pipeline runs
+  straight after clone; point `DATASETS_DIR` at your own data to use a different set.
 - `team_name` is non-unique (200 names / 25,000 teams); achievements linked only
   by name cannot be uniquely attributed and are excluded from the per-team grain
   (documented in [ASSUMPTIONS](docs/ASSUMPTIONS.md)).
